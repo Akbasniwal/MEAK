@@ -1,19 +1,32 @@
 import React from "react";
 import "../style.scss";
-import {AuthContext} from "../Context/AuthContext";
+import { AuthContext } from "../Context/AuthContext";
 
-const Sidebar = () => {
-  const {user,logout} = React.useContext(AuthContext);
+const Sidebar = ({ people, currentChat, SetCurrentChat }) => {
+  const { user, logout } = React.useContext(AuthContext);
   const Chats = () => {
     return (
       <div className="chats">
-        <div className="chat">
-          <img src="https://www.w3schools.com/howto/img_avatar.png" alt="" />
-          <div className="content">
-            <div className="name">Akbasniwal</div>
-            <div className="message">Hello there how you are doing</div>
-          </div>
-        </div>
+        {Object.keys(people).map((key) => {
+          return (
+            <div
+              key={key}
+              onClick={() => {
+                SetCurrentChat([key, people[key]]);
+              }}
+              className={`chat ${currentChat && currentChat[0] === key ? "current-chat" : ""}`}
+            >
+              <img
+                src="https://www.w3schools.com/howto/img_avatar.png"
+                alt=""
+              />
+              <div className="content">
+                <div className="name">{people[key]}</div>
+                <div className="message">Hello there how you are doing</div>
+              </div>
+            </div>
+          );
+        })}
       </div>
     );
   };
@@ -54,14 +67,15 @@ const Sidebar = () => {
 
   const Logout = () => {
     return (
-      <div className="logout" style={{
-        position: "absolute",
-        bottom: "10px",
-        width: "100%",
-      }}>
-        <button onClick={logout}>
-          Logout
-        </button>
+      <div
+        className="logout"
+        style={{
+          position: "absolute",
+          bottom: "10px",
+          width: "100%",
+        }}
+      >
+        <button onClick={logout}>Logout</button>
       </div>
     );
   };

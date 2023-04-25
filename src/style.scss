@@ -45,14 +45,14 @@
   }
 }
 
-@mixin mobile{
-  @media only screen and (max-width: 480){
+@mixin mobile {
+  @media only screen and (max-width: 480) {
     @content;
   }
 }
 
-@mixin tablet{
-  @media only screen and (max-width: 768){
+@mixin tablet {
+  @media only screen and (max-width: 768) {
     @content;
   }
 }
@@ -131,7 +131,7 @@
           justify-content: space-around;
           padding: 10px;
           align-items: center;
-          border-bottom: 1px solid grey;
+          border-bottom: 0.1px solid rgba(128, 128, 128, 0.376);
           img {
             width: 50px;
             height: 50px;
@@ -148,40 +148,46 @@
         }
       }
       .chats {
+        width: 100%;
         display: flex;
-        .chat{
+        flex-direction: column;
+        .chat {
           width: 100%;
           display: flex;
           justify-content: flex-start;
           gap: 20px;
           padding: 10px;
           align-items: center;
-          border-bottom: 0.5px solid rgba(128, 128, 128, 0.394);
+          border-bottom: 0.1px solid rgba(128, 128, 128, 0.394);
           img {
             width: 50px;
             height: 50px;
             border-radius: 50%;
             object-fit: cover;
           }
-          .content{
+          .content {
             display: flex;
             flex-direction: column;
             // gap: 5px;
-            .name{
+            .name {
               text-align: left;
               font-size: large;
               font-weight: bold;
               color: white;
             }
-            .message{
+            .message {
               font-size: medium;
               color: grey;
             }
           }
         }
         .chat:hover {
-          background-color: #5d489995;
+          background-color: #000;
           cursor: pointer;
+        }
+        .current-chat {
+          background-color: #5f479f !important;
+          border-left: 5px solid rgb(246, 255, 0);
         }
       }
     }
@@ -191,7 +197,7 @@
       height: 100%;
       border-radius: 10px;
       background-color: transparent;
-      .topbar{
+      .topbar {
         height: 75px;
         border-radius: 10px;
         background-color: #232523;
@@ -200,52 +206,53 @@
         align-items: center;
         padding: 0 20px;
         justify-content: space-between;
-        .name{
+        .name {
           font-size: large;
           font-weight: bold;
           color: white;
         }
-        .icons{
+        .icons {
           display: flex;
           gap: 15px;
-          .icon{
+          .icon {
             font-size: x-large;
           }
         }
       }
 
-      .bottombar{
+      .bottombar {
         background-color: #000000;
         height: 74px;
         border-radius: 10px;
         display: flex;
         flex-direction: row;
-        
-        input{
-          width: 100% ;
+
+        input {
+          width: 100%;
           background-color: #2f2d34;
           padding: 20px;
           font-size: large;
           border: none;
           outline: none;
+          border-radius: 10px 0 0 10px;
         }
-        
-        .icons{
+
+        .icons {
           display: flex;
           padding: 10px;
           justify-content: flex-end;
           align-items: center;
           gap: 15px;
-          .icon{
+          .icon {
             font-size: x-large;
           }
-          .icon:nth-child(1){
-            font-size: xx-large ;
+          .icon:nth-child(1) {
+            font-size: xx-large;
           }
         }
       }
 
-      .messages{
+      .messages {
         position: relative;
         height: calc(100% - 150px);
         background-color: #5f479f;
@@ -253,7 +260,7 @@
         flex-direction: column;
         flex-flow: column-reverse;
         overflow-y: scroll;
-        .message{
+        .message {
           display: flex;
           flex-direction: row;
           width: 100%;
@@ -261,7 +268,7 @@
           gap: 5px;
           padding: 10px;
           border-radius: 10px;
-          .message-text{
+          .message-text {
             max-width: 70%;
             text-align: left;
             padding: 10px;
@@ -270,17 +277,17 @@
             width: fit-content;
           }
         }
-        .send{
-            flex-direction: row;
-            .message-text{
-              border-radius: 0px 10px 10px 10px;
-              background-color: #4a0d6d55;
-            }
+        .receive {
+          flex-direction: row;
+          .message-text {
+            border-radius: 0px 10px 10px 10px;
+            background-color: #4a0d6d55;
+          }
         }
-        .receive{
-            flex-direction: row-reverse;
-        } 
-        .time{
+        .send {
+          flex-direction: row-reverse;
+        }
+        .time {
           font-size: small;
           color: rgb(190, 190, 190);
         }

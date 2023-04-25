@@ -1,4 +1,4 @@
-import { createContext, useState,useEffect } from "react";
+import { createContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 export const AuthContext = createContext({});
@@ -10,11 +10,11 @@ export function AuthState(props) {
   const HOST = "http://localhost:4500";
 
   useEffect(() => {
-    axios.get('/user').then(response => {
+    axios.get(`${HOST}/user`).then((response) => {
       setId(response.data._id);
       setUser(response.data.username);
     });
-  }, [id,user]);
+  }, [id, user]);
 
   const registerUser = async (e) => {
     e.preventDefault();
@@ -22,20 +22,22 @@ export function AuthState(props) {
     const email = e.target.email.value;
     const password = e.target.password.value;
 
-    axios.post(`${HOST}/register`, {
-      username,
-      email,
-      password,
-    }).then(response => {
-      console.log(response);
-      if (response.data.error) {
-        return response.data;
-      }
-      setUser(response.data.username);
-      setId(response.data.id);
-      console.log(user,id,response.data);
-      navigate("/");
-    });
+    axios
+      .post(`${HOST}/register`, {
+        username,
+        email,
+        password,
+      })
+      .then((response) => {
+        console.log(response);
+        if (response.data.error) {
+          return response.data;
+        }
+        setUser(response.data.username);
+        setId(response.data.id);
+        console.log(user, id, response.data);
+        navigate("/");
+      });
   };
 
   const loginUser = async (e) => {
@@ -43,21 +45,23 @@ export function AuthState(props) {
     const email = e.target.email.value;
     const password = e.target.password.value;
 
-    axios.post(`${HOST}/login`, {
-      email,
-      password,
-    }).then(response => {
-      if (response.data.error) {
-        return response.data;
-      }
-      setUser(response.data.username);
-      setId(response.data.id);
-      navigate("/");
-    });
+    axios
+      .post(`${HOST}/login`, {
+        email,
+        password,
+      })
+      .then((response) => {
+        if (response.data.error) {
+          return response.data;
+        }
+        setUser(response.data.username);
+        setId(response.data.id);
+        navigate("/");
+      });
   };
 
   const logout = async () => {
-    axios.post(`${HOST}/logout`).then(response => {
+    axios.post(`${HOST}/logout`).then((response) => {
       setUser(null);
       setId(null);
       navigate("/");
@@ -65,7 +69,7 @@ export function AuthState(props) {
   };
 
   return (
-    <AuthContext.Provider value={{ registerUser,loginUser,id,user,logout }}>
+    <AuthContext.Provider value={{ registerUser, loginUser, id, user, logout }}>
       {props.children}
     </AuthContext.Provider>
   );
