@@ -36,7 +36,7 @@ const Chatbox = ({ currentChat, ws, messages, setMessages }) => {
   };
 
   const Bottombar = () => {
-    var sticker = 0;
+    const [sticker, setSticker] = React.useState(0);
     const [message, setMessage] = React.useState("");
     function sendMessage(e, file = null) {
       if (e) e.preventDefault();
@@ -65,9 +65,14 @@ const Chatbox = ({ currentChat, ws, messages, setMessages }) => {
     }
     return (
       <form className="bottombar" onSubmit={sendMessage}>
-        <div className="emoji-abs" typeof="button">
+        <div
+          className="emoji-abs"
+          onclick={() => {
+            setSticker(1 - sticker);
+          }}
+        >
           &#128559;
-          <div className={"disable"}>
+          <div className={!sticker && "disable"}>
             <Emoji />
           </div>
         </div>
