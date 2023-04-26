@@ -53,7 +53,6 @@ const Home = () => {
     if ("online" in mdata) {
       showOnline(mdata.online);
     } else if ("message" in mdata) {
-      console.log(mdata);
       setMessages((messages) => [mdata.message].concat(messages));
     }
   }

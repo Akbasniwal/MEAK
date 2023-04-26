@@ -71,6 +71,7 @@ button:focus-visible {
 /* width */
 ::-webkit-scrollbar {
   width: 2px;
+  height: 0px;
 }
 
 /* Track */

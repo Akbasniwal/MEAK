@@ -1,20 +1,31 @@
-import React, { useEffect, useRef } from "react";
-import { BiDotsVertical, BiLink, BiImageAdd } from "react-icons/bi";
-import {
-  BsPersonFillAdd,
-  BsFillCameraVideoFill,
-  BsFillSendFill,
-} from "react-icons/bs";
+import React from "react";
+import { BiDotsVertical, BiImageAdd } from "react-icons/bi";
+import { BsPersonFillAdd, BsFillCameraVideoFill } from "react-icons/bs";
 import { HiArrowLeft } from "react-icons/hi";
+import { MdOutlineAttachFile } from "react-icons/md";
+import { unionBy, upperCase } from "lodash";
+import { BiSend } from "react-icons/bi";
 import { AuthContext } from "../Context/AuthContext";
-import { times, unionBy } from "lodash";
+import axios from "axios";
+import Emoji from "./emoji";
 
 const Chatbox = ({ currentChat, ws, messages, setMessages }) => {
+  const imageExts = ["jpg", "jpeg", "png", "webp", "tiff", "svg", "gif"];
   const { id } = React.useContext(AuthContext);
   const Topbar = () => {
     return (
       <div className="topbar">
-        <div className="name">{currentChat[1]}</div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: "10px",
+          }}
+        >
+          <img src="https://www.w3schools.com/howto/img_avatar.png" alt="" />
+          <div className="name">{currentChat[1]}</div>
+        </div>
         <div className="icons">
           <BsFillCameraVideoFill className="icon" />
           <BsPersonFillAdd className="icon" />
@@ -25,11 +36,11 @@ const Chatbox = ({ currentChat, ws, messages, setMessages }) => {
   };
 
   const Bottombar = () => {
+    var sticker = 0;
     const [message, setMessage] = React.useState("");
-    function sendMessage(e) {
-      e.preventDefault();
+    function sendMessage(e, file = null) {
+      if (e) e.preventDefault();
       const text = message;
-      const file = e.target.image.value;
       setMessage("");
       if (!text && !file) return;
       ws.send(
@@ -42,8 +53,24 @@ const Chatbox = ({ currentChat, ws, messages, setMessages }) => {
         })
       );
     }
+    function uploadFile(e) {
+      const reader = new FileReader();
+      reader.readAsDataURL(e.target.files[0]);
+      reader.onload = () => {
+        sendMessage(null, {
+          name: e.target.files[0].name,
+          data: reader.result,
+        });
+      };
+    }
     return (
       <form className="bottombar" onSubmit={sendMessage}>
+        <div className="emoji-abs" typeof="button">
+          &#128559;
+          <div className={"disable"}>
+            <Emoji />
+          </div>
+        </div>
         <input
           type="text"
           placeholder="Type a message ..."
@@ -55,35 +82,52 @@ const Chatbox = ({ currentChat, ws, messages, setMessages }) => {
         />
         <div className="icons">
           <label htmlFor="file-input">
-            <BiLink className="icon" />
+            <MdOutlineAttachFile className="icon" />
           </label>
           <input
             id="file-input"
             type="file"
             style={{ display: "none" }}
-            name="image"
+            name="file"
+            onChange={uploadFile}
           />
           <BiImageAdd className="icon" />
-          <BsFillSendFill className="icon" />
+          <label htmlFor="submit">
+            <BiSend className="icon" />
+          </label>
+          <button type="submit" id="submit" style={{ display: "none" }} />
         </div>
       </form>
     );
   };
 
-  const Message = ({ type, Message, time }) => {
+  const Message = ({ type, Message, time, file }) => {
+    function renderFile() {
+      const link = axios.defaults.baseURL + "/uploads/" + file;
+      if (imageExts.includes(file.split(".")[1])) {
+        return <img src={link} alt={file} />;
+      } else {
+        return (
+          <div className="file">
+            <a href={link} alt="" target="_blank">
+              {file}
+            </a>
+            <div>{upperCase(file.split(".")[1])}</div>
+          </div>
+        );
+      }
+    }
     return (
       <div className={`message ${type}`}>
         <div className="time">{time.toString().substring(11, 16)}</div>
         <div className="message-text">
-          {/* <img
-            src="https://th.bing.com/th/id/OIP.NbfPECA64xbFnmW58MbWDQHaEo?w=280&h=180&c=7&r=0&o=5&pid=1.7"
-            alt=""
-          /> */}
+          {file && <>{renderFile()}</>}
           <p>{Message}</p>
         </div>
       </div>
     );
   };
+
   return (
     <div className="chatbox">
       {!currentChat && (
@@ -115,6 +159,7 @@ const Chatbox = ({ currentChat, ws, messages, setMessages }) => {
                   type={message.sender == id ? "send" : "receive"}
                   Message={message.text}
                   time={message.createdAt}
+                  file={message.file}
                 />
               );
             })}
