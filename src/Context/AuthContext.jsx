@@ -22,8 +22,6 @@ export function AuthState(props) {
     const username = e.target.username.value;
     const email = e.target.email.value;
     const password = e.target.password.value;
-    console.log(e.target.files);
-    return 0;
 
     axios
       .post(`${HOST}/register`, {

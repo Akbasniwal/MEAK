@@ -9,9 +9,6 @@ export default function Emoji({ message, setMessage, setSticker }) {
     return x;
   }, []);
 
-  // on pressing esc key setsticker to 0
-  
-
   return (
     <div>
       <div className="ems">

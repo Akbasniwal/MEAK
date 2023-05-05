@@ -53,10 +53,6 @@ export default function Register() {
             name="avtar"
             type="file"
             id="file"
-            value={imgData}
-            onChange={(e) => {
-              setImgData(e.target.files[0].value);
-            }}
           />
           <a href="/login">Already have an account?</a>
           <button type="submit">SignUp</button>
