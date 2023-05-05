@@ -7,7 +7,8 @@ export function AuthState(props) {
   const [user, setUser] = useState(null);
   const [id, setId] = useState(null);
   const navigate = useNavigate();
-  const HOST = "http://localhost:4500";
+  // const HOST = "https://meak-server-akbasniwal.vercel.app";
+  const HOST = "http://localhost:5000";
 
   useEffect(() => {
     axios.get(`${HOST}/user`).then((response) => {
@@ -21,6 +22,8 @@ export function AuthState(props) {
     const username = e.target.username.value;
     const email = e.target.email.value;
     const password = e.target.password.value;
+    console.log(e.target.files);
+    return 0;
 
     axios
       .post(`${HOST}/register`, {
@@ -29,13 +32,13 @@ export function AuthState(props) {
         password,
       })
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         if (response.data.error) {
           return response.data;
         }
         setUser(response.data.username);
         setId(response.data.id);
-        console.log(user, id, response.data);
+        // console.log(user, id, response.data);
         navigate("/");
       });
   };
@@ -44,7 +47,7 @@ export function AuthState(props) {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
-
+    // console.log(email);
     axios
       .post(`${HOST}/login`, {
         email,
@@ -54,6 +57,7 @@ export function AuthState(props) {
         if (response.data.error) {
           return response.data;
         }
+        // console.log(response);
         setUser(response.data.username);
         setId(response.data.id);
         navigate("/");

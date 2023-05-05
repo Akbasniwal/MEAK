@@ -1,5 +1,4 @@
-import axios from "axios";
-import React, {useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { AuthContext } from "../Context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
@@ -7,8 +6,10 @@ export default function Register() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { registerUser, user,id } = React.useContext(AuthContext);
+  const [imgData, setImgData] = useState("");
+  const { registerUser, user, id } = React.useContext(AuthContext);
   const navigate = useNavigate();
+
   useEffect(() => {
     if (id) {
       navigate("/", { replace: true });
@@ -30,6 +31,7 @@ export default function Register() {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             placeholder="Enter Username"
+            autoFocus
           />
           <input
             type="email"
@@ -51,6 +53,10 @@ export default function Register() {
             name="avtar"
             type="file"
             id="file"
+            value={imgData}
+            onChange={(e) => {
+              setImgData(e.target.files[0].value);
+            }}
           />
           <a href="/login">Already have an account?</a>
           <button type="submit">SignUp</button>
@@ -58,4 +64,4 @@ export default function Register() {
       </div>
     </div>
   );
-};
+}

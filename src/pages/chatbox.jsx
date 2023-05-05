@@ -67,14 +67,18 @@ const Chatbox = ({ currentChat, ws, messages, setMessages }) => {
       <form className="bottombar" onSubmit={sendMessage}>
         <div
           className="emoji-abs"
-          onclick={() => {
+          onClick={() => {
             setSticker(1 - sticker);
           }}
         >
           &#128559;
-          <div className={!sticker && "disable"}>
-            <Emoji />
-          </div>
+        </div>
+        <div className={!sticker ? "disable" : "enable"}>
+          <Emoji
+            message={message}
+            setMessage={setMessage}
+            setSticker={setSticker}
+          />
         </div>
         <input
           type="text"
@@ -84,6 +88,7 @@ const Chatbox = ({ currentChat, ws, messages, setMessages }) => {
           onChange={(e) => {
             setMessage(e.target.value);
           }}
+          autoFocus
         />
         <div className="icons">
           <label htmlFor="file-input">

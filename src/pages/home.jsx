@@ -14,9 +14,11 @@ const Home = () => {
   const [onlinePeople, setOnlinePeople] = useState({});
   const [currentChat, setCurrentChat] = useState(null);
   const [messages, setMessages] = useState([]);
+  // const HOST = "https://meak-server-akbasniwal.vercel.app";
+  const HOST = "http://localhost:5000";
 
   useEffect(() => {
-    const ws = new WebSocket("ws://localhost:4500");
+    const ws = new WebSocket("ws://localhost:5000", "echo-protocol");
     setWs(ws);
     ws.addEventListener("message", HandleMessage);
   }, []);
@@ -30,7 +32,6 @@ const Home = () => {
   }, [id]);
 
   useEffect(() => {
-    const HOST = "http://localhost:4500";
     if (currentChat) {
       axios.get(`${HOST}/messages/` + currentChat[0]).then((res) => {
         setMessages(res.data);

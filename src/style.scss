@@ -232,6 +232,7 @@
         border-radius: 10px;
         display: flex;
         flex-direction: row;
+        position: relative;
 
         input {
           width: 100%;
@@ -257,6 +258,7 @@
           }
         }
         .emoji-abs {
+          position: relative;
           height: 74px;
           width: 74px;
           border-radius: 10px;
@@ -267,9 +269,31 @@
           font-size: x-large;
           border-radius: 10px 0 0 10px;
           cursor: pointer;
-          .disable {
-            display: none;
-          }
+        }
+        .disable {
+          display: none;
+        }
+        .enable {
+          position: absolute;
+          bottom: 80px;
+          left: 2px;
+          background-color: rgba(37, 88, 108, 0.545);
+          border: 1px solid white;
+          border-radius: 10px;
+        }
+        .ems {
+          margin: 10px;
+          height: 200px;
+          max-width: 165px;
+          display: flex;
+          flex-direction: row;
+          flex-flow: wrap;
+          justify-content: flex-start;
+          overflow: scroll;
+        }
+        .ems *{
+          font-size: large;
+          margin: 5px;
         }
       }
 

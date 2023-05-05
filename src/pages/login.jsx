@@ -4,7 +4,7 @@ import { AuthContext } from "../Context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const { loginUser,user,id } = React.useContext(AuthContext);
+  const { loginUser, user, id } = React.useContext(AuthContext);
   const navigate = useNavigate();
   useEffect(() => {
     if (id) {
@@ -25,6 +25,7 @@ const Login = () => {
             name="email"
             id="email"
             placeholder="Enter Email"
+            autoFocus
           />
           <input
             type="password"
