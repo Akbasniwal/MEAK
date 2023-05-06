@@ -14,7 +14,11 @@ const Sidebar = ({ offline, people, currentChat, SetCurrentChat }) => {
             <div
               key={key}
               onClick={() => {
-                SetCurrentChat([key, offline[key].username]);
+                SetCurrentChat([
+                  key,
+                  offline[key].username,
+                  offline[key].avtar,
+                ]);
               }}
               className={`chat ${
                 currentChat && currentChat[0] === key ? "current-chat" : ""
@@ -33,7 +37,7 @@ const Sidebar = ({ offline, people, currentChat, SetCurrentChat }) => {
             <div
               key={key}
               onClick={() => {
-                SetCurrentChat([key, people[key].username]);
+                SetCurrentChat([key, people[key].username, people[key].avtar]);
               }}
               className={`chat ${
                 currentChat && currentChat[0] === key ? "current-chat" : ""

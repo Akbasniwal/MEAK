@@ -13,6 +13,7 @@ const Chatbox = ({ currentChat, ws, messages, setMessages }) => {
   const imageExts = ["jpg", "jpeg", "png", "webp", "tiff", "svg", "gif"];
   const { id } = React.useContext(AuthContext);
   const Topbar = () => {
+    const link = axios.defaults.baseURL + "/uploads/profiles/" + currentChat[2];
     return (
       <div className="topbar">
         <div
@@ -23,7 +24,14 @@ const Chatbox = ({ currentChat, ws, messages, setMessages }) => {
             gap: "10px",
           }}
         >
-          <img src="https://www.w3schools.com/howto/img_avatar.png" alt="" />
+          <img
+            src={
+              currentChat[2]
+                ? link
+                : "https://www.w3schools.com/howto/img_avatar.png"
+            }
+            alt=""
+          />
           <div className="name">{currentChat[1]}</div>
         </div>
         <div className="icons">
