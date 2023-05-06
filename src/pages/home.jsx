@@ -70,7 +70,6 @@ const Home = () => {
         };
       }
     });
-    console.log(people);
     setOnlinePeople(people);
   }
 
