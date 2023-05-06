@@ -12,6 +12,7 @@ const Home = () => {
   const { id } = React.useContext(AuthContext);
   const [ws, setWs] = useState(null);
   const [onlinePeople, setOnlinePeople] = useState({});
+  const [offlinePeople, setOfflinePeople] = useState({});
   const [currentChat, setCurrentChat] = useState(null);
   const [messages, setMessages] = useState([]);
   // const HOST = "https://meak-server-akbasniwal.vercel.app";
@@ -39,13 +40,37 @@ const Home = () => {
     }
   }, [currentChat]);
 
+  useEffect(() => {
+    axios.get(`${HOST}/people`).then((res) => {
+      const offline = res.data
+        .filter((item) => {
+          return item._id !== id;
+        })
+        .filter((item) => {
+          return !Object.keys(onlinePeople).includes(item._id);
+        });
+      const offlineP = {};
+      offline.forEach((item) => {
+        offlineP[item._id] = {
+          username: item.username,
+          avtar: item.profilePicture,
+        };
+      });
+      setOfflinePeople(offlineP);
+    });
+  }, [onlinePeople]);
+
   function showOnline(data) {
     const people = {};
     data.forEach((item) => {
       if ("userId" in item && item.userId !== id) {
-        people[item.userId] = item.username;
+        people[item.userId] = {
+          username: item.username,
+          avtar: item.profilePicture,
+        };
       }
     });
+    console.log(people);
     setOnlinePeople(people);
   }
 
@@ -62,6 +87,7 @@ const Home = () => {
     <div className="home">
       <div className="container">
         <Sidebar
+          offline={offlinePeople}
           people={onlinePeople}
           SetCurrentChat={setCurrentChat}
           currentChat={currentChat}

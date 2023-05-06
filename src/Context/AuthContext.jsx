@@ -6,6 +6,7 @@ export const AuthContext = createContext({});
 export function AuthState(props) {
   const [user, setUser] = useState(null);
   const [id, setId] = useState(null);
+  const [avtar, setAvtar] = useState(null);
   const navigate = useNavigate();
   // const HOST = "https://meak-server-akbasniwal.vercel.app";
   const HOST = "http://localhost:5000";
@@ -14,6 +15,9 @@ export function AuthState(props) {
     axios.get(`${HOST}/user`).then((response) => {
       setId(response.data._id);
       setUser(response.data.username);
+      if (response.data.profilePicture) {
+        setAvtar(response.data.profilePicture);
+      }
     });
   }, [id, user]);
 
@@ -36,7 +40,9 @@ export function AuthState(props) {
         }
         setUser(response.data.username);
         setId(response.data.id);
-        // console.log(user, id, response.data);
+        if (response.data.avtar) {
+          setAvtar(response.data.avtar);
+        }
         navigate("/");
       });
   };
@@ -58,6 +64,9 @@ export function AuthState(props) {
         // console.log(response);
         setUser(response.data.username);
         setId(response.data.id);
+        if (response.data.avtar) {
+          setAvtar(response.data.avtar);
+        }
         navigate("/");
       });
   };
@@ -71,7 +80,9 @@ export function AuthState(props) {
   };
 
   return (
-    <AuthContext.Provider value={{ registerUser, loginUser, id, user, logout }}>
+    <AuthContext.Provider
+      value={{ registerUser, loginUser, id, user, logout, avtar }}
+    >
       {props.children}
     </AuthContext.Provider>
   );

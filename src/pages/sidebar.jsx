@@ -1,29 +1,49 @@
 import React from "react";
 import "../style.scss";
 import { AuthContext } from "../Context/AuthContext";
+import Person from "./person";
+import axios from "axios";
 
-const Sidebar = ({ people, currentChat, SetCurrentChat }) => {
-  const { user, logout } = React.useContext(AuthContext);
+const Sidebar = ({ offline, people, currentChat, SetCurrentChat }) => {
+  const { avtar, user, logout } = React.useContext(AuthContext);
   const Chats = () => {
     return (
       <div className="chats">
+        {Object.keys(offline).map((key) => {
+          return (
+            <div
+              key={key}
+              onClick={() => {
+                SetCurrentChat([key, offline[key].username]);
+              }}
+              className={`chat ${
+                currentChat && currentChat[0] === key ? "current-chat" : ""
+              }`}
+            >
+              <Person
+                online={false}
+                name={offline[key].username}
+                avtar={offline[key].avtar}
+              />
+            </div>
+          );
+        })}
         {Object.keys(people).map((key) => {
           return (
             <div
               key={key}
               onClick={() => {
-                SetCurrentChat([key, people[key]]);
+                SetCurrentChat([key, people[key].username]);
               }}
-              className={`chat ${currentChat && currentChat[0] === key ? "current-chat" : ""}`}
+              className={`chat ${
+                currentChat && currentChat[0] === key ? "current-chat" : ""
+              }`}
             >
-              <img
-                src="https://www.w3schools.com/howto/img_avatar.png"
-                alt=""
+              <Person
+                online={true}
+                name={people[key].username}
+                avtar={people[key].avtar}
               />
-              <div className="content">
-                <div className="name">{people[key]}</div>
-                <div className="message">Hello there how you are doing</div>
-              </div>
             </div>
           );
         })}
@@ -44,6 +64,7 @@ const Sidebar = ({ people, currentChat, SetCurrentChat }) => {
     );
   };
   const Header = () => {
+    const link = axios.defaults.baseURL + "/uploads/profiles/" + avtar;
     return (
       <div className="header">
         <div className="logo">
@@ -56,9 +77,34 @@ const Sidebar = ({ people, currentChat, SetCurrentChat }) => {
           </div>
           <div className="user-img">
             <img
-              src="https://www.w3schools.com/howto/img_avatar.png"
+              src={
+                avtar ? link : "https://www.w3schools.com/howto/img_avatar.png"
+              }
               alt="user-img"
             />
+            <form className="avtar">
+              <label htmlFor="file">Change Avtar</label>
+              <input
+                type="file"
+                name="file"
+                id="file"
+                style={{ display: "none" }}
+                onChange={(e) => {
+                  const reader = new FileReader();
+                  reader.readAsDataURL(e.target.files[0]);
+                  reader.onload = () => {
+                    axios
+                      .post("/changeAvtar", {
+                        name: e.target.files[0].name,
+                        avtar: reader.result,
+                      })
+                      .then((res) => {
+                        console.log(res);
+                      });
+                  };
+                }}
+              />
+            </form>
           </div>
         </div>
       </div>
@@ -83,7 +129,7 @@ const Sidebar = ({ people, currentChat, SetCurrentChat }) => {
   return (
     <div className="sidebar">
       <Header />
-      <Search />
+      {/* <Search /> */}
       <Chats />
       <Logout />
     </div>
